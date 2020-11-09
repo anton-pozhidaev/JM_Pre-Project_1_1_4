@@ -11,10 +11,11 @@ import java.util.logging.Logger;
 
 public class UserDaoJDBCImpl implements UserDao {
 
-    private Util daoUtil = Util.getInstance();
-    private static Logger log = Logger.getLogger(UserDaoJDBCImpl.class.getName());
+    private final Connection connection = Util.getConnection();
+    private final static Logger log = Logger.getLogger(UserDaoJDBCImpl.class.getName());
 
     public UserDaoJDBCImpl() {
+
     }
 
     public void createUsersTable() {
@@ -25,8 +26,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 " age SMALLINT not NULL, " +
                 "PRIMARY KEY (id))";
 
-        try (Connection connection = daoUtil.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             log.log(Level.SEVERE, "Creation of DB is unsuccessful", e);
@@ -37,11 +37,10 @@ public class UserDaoJDBCImpl implements UserDao {
     public void dropUsersTable() {
         String sql = "DROP TABLE IF EXISTS users";
 
-        try (Connection connection = daoUtil.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            log.log(Level.SEVERE, "Droping of User's DB is unsuccessful", e);
+            log.log(Level.SEVERE, "Droping of DB is unsuccessful", e);
             e.printStackTrace();
         }
     }
@@ -49,8 +48,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public void saveUser(String name, String lastName, byte age) {
         String sql = "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)";
 
-        try (Connection connection = daoUtil.getConnection();
-             PreparedStatement pStmnt = connection.prepareStatement(sql)) {
+        try (PreparedStatement pStmnt = connection.prepareStatement(sql)) {
             pStmnt.setString(1,name);
             pStmnt.setString(2,lastName);
             pStmnt.setByte(3, age);
@@ -65,8 +63,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public void removeUserById(long id) {
         String sql = "DELETE FROM users WHERE id=?";
 
-        try (Connection connection = daoUtil.getConnection();
-             PreparedStatement pStmnt = connection.prepareStatement(sql)) {
+        try (PreparedStatement pStmnt = connection.prepareStatement(sql)) {
             pStmnt.setLong(1,id);
             pStmnt.executeUpdate();
         } catch (SQLException e) {
@@ -80,8 +77,7 @@ public class UserDaoJDBCImpl implements UserDao {
         String sql = "SELECT * FROM users";
         List<User> allUsersList = new ArrayList<>();
 
-        try (Connection connection = daoUtil.getConnection();
-             Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement();
              ResultSet rSet = statement.executeQuery(sql)) {
             while (rSet.next()) {
                 Long id = rSet.getLong("id");
@@ -100,8 +96,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public void cleanUsersTable() {
         String sql = "DELETE FROM users";
 
-        try (Connection connection = daoUtil.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             log.log(Level.SEVERE, "Cleaning of DB \"users\" is unsuccessful", e);
