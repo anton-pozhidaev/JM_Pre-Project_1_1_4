@@ -7,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,18 +78,19 @@ public class UserDaoHibernateImpl implements UserDao {
             }
             e.printStackTrace();
         }
+        System.out.println("User с именем – " + name + " добавлен в базу данных");
     }
 
     @Override
     public void removeUserById(long id) {
         Transaction tx = null;
-        String sql = "DELETE FROM users WHERE id=?";
 
         try (Session session = factory.openSession()) {
             tx = session.beginTransaction();
-            Query query = session.createSQLQuery(sql);
-            query.setParameter(1, id);
-            query.executeUpdate();
+            User user = session.get(User.class, id);
+            if (user != null) {
+                session.delete(user);
+            }
             tx.commit();
         } catch (Exception e) {
             log.log(Level.SEVERE, "Removing of user from DB is unsuccessful", e);
@@ -103,15 +103,15 @@ public class UserDaoHibernateImpl implements UserDao {
     }
 
     @Override
-//    @SuppressWarnings("Due for cast of resultList")
     public List<User> getAllUsers() {
         Transaction tx = null;
         List<User> allUsersList = null;
-        String sql = "SELECT a FROM User a";
+        // String hql = "SELECT a FROM User a";
+        String hql = "FROM User";
 
         try (Session session = factory.openSession()) {
             tx = session.beginTransaction();
-            org.hibernate.query.Query<User> query = session.createQuery(sql, User.class);
+            org.hibernate.query.Query<User> query = session.createQuery(hql, User.class);
             allUsersList = query.getResultList();
             tx.commit();
         } catch (Exception e) {

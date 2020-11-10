@@ -19,7 +19,7 @@ public class Util {
 
     private static Logger log = Logger.getLogger(Util.class.getName());
 
-//    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/jmtaskjdbc?serverTimezone=Europe/Moscow";
     private static final String USER = "root";
     private static final String PASSWORD = "nimda";
@@ -49,7 +49,7 @@ public class Util {
                 Configuration configuration = new Configuration();
 
                 Properties settings = new Properties();
-//                settings.put(Environment.DRIVER, DRIVER);
+                // settings.put(Environment.DRIVER, DRIVER);
                 settings.put(Environment.URL, DB_URL);
                 settings.put(Environment.USER, USER);
                 settings.put(Environment.PASS, PASSWORD);
@@ -71,24 +71,14 @@ public class Util {
         }
         return factory;
     }
+}
+
 /*
         try {
-            factory = new Configuration().configure().buildSessionFactory();
+            factory = new Configuration().configure("hibernate.cgf.xml").buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Failed to create sessionFactory object." + ex);
             throw new ExceptionInInitializerError(ex);
         }
 */
 
-/*
-    @Override
-    public void close() throws SQLException {
-        if (dbConn != null) {
-            dbConn.close();
-        }
-        if (factory != null) {
-            factory.close();
-        }
-    }
-*/
-}
