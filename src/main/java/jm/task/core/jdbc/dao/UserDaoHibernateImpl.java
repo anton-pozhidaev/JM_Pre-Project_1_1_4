@@ -106,7 +106,6 @@ public class UserDaoHibernateImpl implements UserDao {
     public List<User> getAllUsers() {
         Transaction tx = null;
         List<User> allUsersList = null;
-        // String hql = "SELECT a FROM User a";
         String hql = "FROM User";
 
         try (Session session = factory.openSession()) {
