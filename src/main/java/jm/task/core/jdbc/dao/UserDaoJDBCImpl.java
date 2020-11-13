@@ -30,7 +30,6 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             log.log(Level.SEVERE, "Creation of DB is unsuccessful", e);
-            e.printStackTrace();
         }
     }
 
@@ -41,7 +40,6 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             log.log(Level.SEVERE, "Droping of DB is unsuccessful", e);
-            e.printStackTrace();
         }
     }
 
@@ -89,7 +87,6 @@ public class UserDaoJDBCImpl implements UserDao {
             connection.commit();
         } catch (SQLException e) {
             log.log(Level.SEVERE, "Removing of user from DB is unsuccessful", e);
-            e.printStackTrace();
         }
 
     }
@@ -109,7 +106,6 @@ public class UserDaoJDBCImpl implements UserDao {
             }
         } catch (SQLException e) {
             log.log(Level.SEVERE, "Getting of all users from DB is unsuccessful", e);
-            e.printStackTrace();
         }
         return allUsersList;
     }
@@ -121,7 +117,6 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             log.log(Level.SEVERE, "Cleaning of DB \"users\" is unsuccessful", e);
-            e.printStackTrace();
         }
     }
 }
