@@ -45,27 +45,48 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
-    public void saveUser(String name, String lastName, byte age) {
-        String sql = "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)";
+    public void saveUser(String name1, String lastName1, byte age1) {
+        String sql = "INSERT INTO users (name, lastname, age) VALUES (?, ?, ?)";
+        String sql2 = "SELECT name, lastname FROM users WHERE name=? AND lastname=?";
 
-        try (PreparedStatement pStmnt = connection.prepareStatement(sql)) {
-            pStmnt.setString(1,name);
-            pStmnt.setString(2,lastName);
-            pStmnt.setByte(3, age);
+        try (PreparedStatement pStmnt = connection.prepareStatement(sql);
+        PreparedStatement pStmnt2 = connection.prepareStatement(sql2)) {
+            connection.setAutoCommit(false);
+            pStmnt.setString(1,name1);
+            pStmnt.setString(2,lastName1);
+            pStmnt.setByte(3, age1);
             pStmnt.executeUpdate();
+
+            pStmnt2.setString(1, name1);
+            pStmnt2.setString(2, lastName1);
+            ResultSet rSet = pStmnt2.executeQuery();
+            while (rSet.next()) {
+                String uName = rSet.getString("name");
+                String uLastName = rSet.getString("lastname");
+                System.out.println("User с именем \"" + uName + " " + uLastName +"\" 100пудова добавлен в базу данных");
+            }
+            connection.commit();
         } catch (SQLException e) {
             log.log(Level.SEVERE, "Saving of user to DB is unsuccessful", e);
-            e.printStackTrace();
+            if (connection != null) {
+                try {
+                    System.err.print("Transaction is being rolled back\n");
+                    connection.rollback();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
         }
-        System.out.println("User с именем – " + name + " добавлен в базу данных");
     }
 
     public void removeUserById(long id) {
         String sql = "DELETE FROM users WHERE id=?";
 
         try (PreparedStatement pStmnt = connection.prepareStatement(sql)) {
+            connection.setAutoCommit(false);
             pStmnt.setLong(1,id);
             pStmnt.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             log.log(Level.SEVERE, "Removing of user from DB is unsuccessful", e);
             e.printStackTrace();
