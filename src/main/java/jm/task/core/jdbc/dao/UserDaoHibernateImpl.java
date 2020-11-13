@@ -40,7 +40,6 @@ public class UserDaoHibernateImpl implements UserDao {
             if (tx != null) {
                 tx.rollback();
             }
-            e.printStackTrace();
         }
     }
 
@@ -59,7 +58,6 @@ public class UserDaoHibernateImpl implements UserDao {
             if (tx != null) {
                 tx.rollback();
             }
-            e.printStackTrace();
         }
     }
 
@@ -76,7 +74,6 @@ public class UserDaoHibernateImpl implements UserDao {
             if (tx != null) {
                 tx.rollback();
             }
-            e.printStackTrace();
         }
         System.out.println("User с именем – " + name + " добавлен в базу данных");
     }
@@ -97,7 +94,6 @@ public class UserDaoHibernateImpl implements UserDao {
             if (tx != null) {
                 tx.rollback();
             }
-            e.printStackTrace();
         }
 
     }
@@ -118,7 +114,6 @@ public class UserDaoHibernateImpl implements UserDao {
             if (tx != null) {
                 tx.rollback();
             }
-            e.printStackTrace();
         }
         return allUsersList;
     }
@@ -138,7 +133,6 @@ public class UserDaoHibernateImpl implements UserDao {
             if (tx != null) {
                 tx.rollback();
             }
-            e.printStackTrace();
-        }
+       }
     }
 }
