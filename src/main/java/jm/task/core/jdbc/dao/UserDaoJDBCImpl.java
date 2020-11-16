@@ -64,12 +64,14 @@ public class UserDaoJDBCImpl implements UserDao {
                 System.out.println("User с именем \"" + uName + " " + uLastName +"\" 100пудова добавлен в базу данных");
             }
             connection.commit();
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
             log.log(Level.SEVERE, "Saving of user to DB is unsuccessful", e);
             if (connection != null) {
                 try {
                     System.err.print("Transaction is being rolled back\n");
                     connection.rollback();
+                    connection.setAutoCommit(true);
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
@@ -85,6 +87,7 @@ public class UserDaoJDBCImpl implements UserDao {
             pStmnt.setLong(1,id);
             pStmnt.executeUpdate();
             connection.commit();
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
             log.log(Level.SEVERE, "Removing of user from DB is unsuccessful", e);
         }
