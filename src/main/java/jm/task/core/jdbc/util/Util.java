@@ -53,7 +53,7 @@ public class Util {
                 settings.put(Environment.PASS, PASSWORD);
                 settings.put(Environment.DIALECT, DIALECT_mySQL);
 
-                settings.put(Environment.SHOW_SQL, "true");
+//                settings.put(Environment.SHOW_SQL, "true");
 
                 configuration.setProperties(settings);
                 configuration.addAnnotatedClass(User.class);
