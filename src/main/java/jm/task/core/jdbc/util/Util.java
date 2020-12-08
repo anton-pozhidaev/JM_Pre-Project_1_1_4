@@ -33,13 +33,16 @@ public class Util {
 
 
     public static Connection getConnection() {
-        try {
-            return dbConn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-        } catch (SQLException e) {
-            log.log(Level.SEVERE, "Creation of CONNECTION to DB is unsuccessful", e);
-            e.printStackTrace();
-            return null;
+        if (dbConn == null) {
+            try {
+                return dbConn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+            } catch (SQLException e) {
+                log.log(Level.SEVERE, "Creation of JDBC CONNECTION to DB is unsuccessful", e);
+                e.printStackTrace();
+                return null;
+            }
         }
+        return dbConn;
     }
 
     public static SessionFactory getSessionFactory() {

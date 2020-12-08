@@ -102,7 +102,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public List<User> getAllUsers() {
         Transaction tx = null;
         List<User> allUsersList = null;
-        String hql = "FROM User";
+        String hql = "from User";
 
         try (Session session = factory.openSession()) {
             tx = session.beginTransaction();
@@ -121,12 +121,11 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void cleanUsersTable() {
         Transaction tx = null;
-        String sql = "DELETE FROM users";
+        String hql = "delete User";
 
         try (Session session = factory.openSession()) {
             tx = session.beginTransaction();
-            Query query = session.createSQLQuery(sql);
-            query.executeUpdate();
+            session.createQuery(hql).executeUpdate();
             tx.commit();
         } catch (Exception e) {
             log.log(Level.SEVERE, "Cleaning of DB \"users\" is unsuccessful", e);
