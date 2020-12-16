@@ -49,8 +49,8 @@ public class Util {
         if (factory == null) {
             try {
                 Configuration configuration = new Configuration();
-
                 Properties settings = new Properties();
+
                 settings.put(Environment.URL, DB_URL);
                 settings.put(Environment.USER, USER);
                 settings.put(Environment.PASS, PASSWORD);
